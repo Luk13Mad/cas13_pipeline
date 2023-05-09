@@ -10,6 +10,7 @@
 #	|	|_other scritps
 #	|
 #	|_Snakefile
+# |_master.ipynb
 
 SCRIPT_PATH=${0%/*}
 
