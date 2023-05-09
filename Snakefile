@@ -14,7 +14,6 @@ rule fastqc_raw_data:
 		"raw_sequencing_data/FastQC/{run}/{type}/FastQC_raw_data.done"
 	shell:
 		'''
-		module load FastQC/0.11.5-Java-1.8.0_112
 		mkdir -p raw_sequencing_data/FastQC/{wildcards.run}/{wildcards.type}
 		touch raw_sequencing_data/FastQC/{wildcards.run}/{wildcards.type}/FastQC_raw_data.done
 		fastqc --noextract -o raw_sequencing_data/FastQC/{wildcards.run}/{wildcards.type} -t 4 {input.fastqfile}
@@ -55,7 +54,6 @@ rule fastqc_trimmed_data:
 		'''
 		mkdir -p processed_sequencing_data/{wildcards.run}/{wildcards.type}/FastQC
 		touch processed_sequencing_data/{wildcards.run}/{wildcards.type}/FastQC/trimmed_data.done
-		module load FastQC/0.11.5-Java-1.8.0_112
 		fastqc --noextract -o {params.wd}processed_sequencing_data/{wildcards.run}/{wildcards.type}/FastQC -t 4 {params.wd}{input.forward_reads} {params.wd}{input.reverse_reads}
 		'''
 
@@ -70,8 +68,6 @@ rule count_constructs:
 		wd = WORKING_DIR
 	shell:
 		'''
-		module load anaconda3/2021.05
-		source activate cas13_pipeline 
 		python scripts/count_constructs/main.py 2D --resfile count_results_{wildcards.type}.tsv --samplefolder {params.wd}processed_sequencing_data/{wildcards.run}/{wildcards.type}/ -f {wildcards.type}_L1_1_trimmed.fq.gz -r {wildcards.type}_L1_2_trimmed.fq.gz -e {wildcards.type}_constructs.csv -s1 58 -e1 81 -s2 50 -e2 90 -w 20 --batchsize 100000
 		'''
 
