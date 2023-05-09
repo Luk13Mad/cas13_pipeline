@@ -1,9 +1,7 @@
 import glob
 import os
 
-WORKING_DIR = os.path.dirname(os.path.abspath(__file__)) + "/"
-
-os.chdir(WORKING_DIR)
+WORKING_DIR = workflow.basedir
 
 def get_input_raw_data_fastqc(wildcards):
 	files=[x for x in os.listdir("raw_sequencing_data/{}/raw_data/{}/".format(wildcards.run,wildcards.type)) if x.endswith(".fq.gz")]
