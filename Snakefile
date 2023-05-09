@@ -64,7 +64,6 @@ rule count_constructs:
 		"processed_sequencing_data/{run}/{type}/FastQC/trimmed_data.done",
 		forward_reads="processed_sequencing_data/{run}/{type}/{type}_L1_1_trimmed.fq.gz",
 		reverse_reads="processed_sequencing_data/{run}/{type}/{type}_L1_2_trimmed.fq.gz",
-		expected="processed_sequencing_data/{run}/{type}/{type}_constructs.csv"
 	output:
 		"processed_sequencing_data/{run}/{type}/count_results_{type}.tsv"
 	params:
