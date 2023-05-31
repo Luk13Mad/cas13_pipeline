@@ -40,5 +40,8 @@ Below is an example of the pipeline in action, step by step.
     └── PA_TU8988_F6_EKDL210008849-1a-D702-N506_HTK7WDSX2_L4_2.fq.gz
 
 ```
+In this example you conducted a CRISPR screen with three timepoints TP1, TP2 and TP3 each of which has two replicates. So we have TP1 (PA_TU8988_A1 and PA_TU8988_B2), TP2 (PA_TU8988_C3 and PA_TU8988_D4) and TP3 (PA_TU8988_E5 and PA_TU8988_F6).
+- To obtain the raw count table and associated quality control graphic for TP1 replicate 1 (that is PA_TU8988_A1) you have to run the following snakemake command ``snakemake --profile LSF processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/graphics/summary_graphics_PA_TU8988_A1.pdf`` You have to set up the profile yourself so snakemake works with your cluster.
+
 
 Tested with fastqc 0.11.5, cutadapt 1.18, R 4.1.0 (with reshape2, dplyr, ggrepel, ggplot2, gemini, configr), count_constructs 1.0, python 3.10.11 (with snakemake_7.25.3, pandas, numpy, click_8.1.3, statsmodels, toml, scipy)
