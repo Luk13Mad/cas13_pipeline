@@ -3,14 +3,14 @@
 #Creates needed directories for running snakemake pipeline
 #Create folder struct below, cd to scripts folder an run setup.sh
 #
-#Screen_folder
+#
 #	|
 #	|_scripts
 #	|	|_setup.sh
 #	|	|_other scritps
 #	|
 #	|_Snakefile
-# |_master.ipynb
+#   |_master.ipynb
 
 SCRIPT_PATH=${0%/*}
 
