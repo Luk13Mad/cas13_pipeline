@@ -89,7 +89,30 @@ celllines = ["PATU"]`` This will aggregate the count results from the folder X20
 
 - The next few cells in the notebook are optional. The columns in the merged count tables are named after the files they originated from, if you want to rename them for example to something shorter, now is the time.
 
-- Now we have to generate TOML files with some options for later processing. One TOML file per cell line, placed right next to the merged_counts file. In this example we need only one TOML file.
+- Now we have to generate TOML files with some options for later processing. One TOML file per cell line, placed right next to the merged_counts file. In this example we need only one TOML file.  
+```
+cellline = "PATU"
+
+[prepareLFC]
+earlyTP = "PATUTP1"
+comparisons = [[1,2],[1,3],[2,3]]
+
+[GEMINI]
+sample_anno_rows = [14,15,18,19] #comma separated list of row numbers needed from sample_annotation
+counts_cols = ["PATUTP1","PATUTP3"] #comma separated list of column names needed from counts
+earlyTP = ["PATUTP1.REP1","PATUTP1.REP2"] # comma separated list of column names with ETP from counts
+ETP_col_index = [1,6] #column indices with early timepoint columns in count
+LTP_col_index = [5,2] #column indices with late timepoint columns in count
+mean_x = 1.0 #mean for x variable for GEMINI
+sd_x = 1.0 #sd for x variable for GEMINI
+mean_y = 0.0 #mean for y variable for GEMINI
+sd_y = 0.5 #sd for y variable for GEMINI
+mean_xx = 1.0
+sd_xx = 0.5
+mean_s = 0.0 #mean for s variable for GEMINI
+sd_s = 0.5 #mean for r variable for GEMINI
+pc_genes = ["AQR","CDK9","PABPN1"]
+```
 
 
 Tested with fastqc 0.11.5, cutadapt 1.18, R 4.1.0 (with reshape2, dplyr, ggrepel, ggplot2, gemini, configr), count_constructs 1.0 and python 3.10.11 (with snakemake_7.25.3, pandas, numpy, click_8.1.3, statsmodels, toml, scipy).
