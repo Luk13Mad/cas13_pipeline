@@ -68,7 +68,7 @@ rule count_constructs:
 		wd = WORKING_DIR
 	shell:
 		'''
-		python scripts/count_constructs/main.py 2D --resfile count_results_{wildcards.type}.tsv --samplefolder {params.wd}/processed_sequencing_data/{wildcards.run}/{wildcards.type}/ -f {wildcards.type}_L1_1_trimmed.fq.gz -r {wildcards.type}_L1_2_trimmed.fq.gz -e {wildcards.type}_constructs.csv -s1 58 -e1 81 -s2 50 -e2 90 -w 20 --batchsize 100000
+		count_constructs 2D --resfile count_results_{wildcards.type}.tsv --samplefolder {params.wd}/processed_sequencing_data/{wildcards.run}/{wildcards.type}/ -f {wildcards.type}_L1_1_trimmed.fq.gz -r {wildcards.type}_L1_2_trimmed.fq.gz -e {wildcards.type}_constructs.csv -s1 58 -e1 81 -s2 50 -e2 90 -w 20 --batchsize 100000
 		'''
 
 
