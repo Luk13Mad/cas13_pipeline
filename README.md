@@ -41,7 +41,43 @@ Below is an example of the pipeline in action, step by step.
 
 ```
 In this example you conducted a CRISPR screen with three timepoints TP1, TP2 and TP3 each of which has two replicates. So we have TP1 (PA_TU8988_A1 and PA_TU8988_B2), TP2 (PA_TU8988_C3 and PA_TU8988_D4) and TP3 (PA_TU8988_E5 and PA_TU8988_F6).
-- To obtain the raw count table and associated quality control graphic for TP1 replicate 1 (that is PA_TU8988_A1) you have to run the following snakemake command ``snakemake --profile LSF processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/graphics/summary_graphics_PA_TU8988_A1.pdf`` You have to set up the profile yourself so snakemake works with your cluster.
+- To obtain the raw count table and associated quality control graphic for TP1 replicate 1 (that is PA_TU8988_A1) you have to run the following snakemake command ``snakemake --profile LSF processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/graphics/summary_graphics_PA_TU8988_A1.pdf`` You have to set up the profile yourself so snakemake works with your cluster. This command will prompt snakemake to execute the following sequence of rules:  
+```
+Building DAG of jobs...
+Job stats:
+job                      count    min threads    max threads
+---------------------  -------  -------------  -------------
+count_constructs             1              1              1
+cutadapt_raw_data            1              1              1
+fastqc_raw_data              1              1              1
+fastqc_trimmed_data          1              1              1
+make_summary_graphics        1              1              1
+total                        5              1              1
+
+rule fastqc_raw_data:
+    output: raw_sequencing_data/FastQC/X204SC20113232-Z01-F010/PA_TU8988_A1/FastQC_raw_data.done
+    wildcards: run=X204SC20113232-Z01-F010, type=PA_TU8988_A1
+
+rule cutadapt_raw_data:
+    input: raw_sequencing_data/FastQC/X204SC20113232-Z01-F010/PA_TU8988_A1/FastQC_raw_data.done
+    output: processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/PA_TU8988_A1_L1_1_trimmed.fq.gz, processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/PA_TU8988_A1_L1_2_trimmed.fq.gz
+    wildcards: run=X204SC20113232-Z01-F010, type=PA_TU8988_A1
+
+rule fastqc_trimmed_data:
+    input: processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/PA_TU8988_A1_L1_1_trimmed.fq.gz, processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/PA_TU8988_A1_L1_2_trimmed.fq.gz
+    output: processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/FastQC/trimmed_data.done
+    wildcards: run=X204SC20113232-Z01-F010, type=PA_TU8988_A1
+
+rule count_constructs:
+    input: processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/FastQC/trimmed_data.done, processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/PA_TU8988_A1_L1_1_trimmed.fq.gz, processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/PA_TU8988_A1_L1_2_trimmed.fq.gz
+    output: processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/count_results_PA_TU8988_A1.tsv
+    wildcards: run=X204SC20113232-Z01-F010, type=PA_TU8988_A1
+
+rule make_summary_graphics:
+    input: processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/count_results_PA_TU8988_A1.tsv
+    output: processed_sequencing_data/X204SC20113232-Z01-F010/PA_TU8988_A1/graphics/summary_graphics_PA_TU8988_A1.pdf
+    wildcards: run=X204SC20113232-Z01-F010, type=PA_TU8988_A1
+```
 
 
 Tested with fastqc 0.11.5, cutadapt 1.18, R 4.1.0 (with reshape2, dplyr, ggrepel, ggplot2, gemini, configr), count_constructs 1.0, python 3.10.11 (with snakemake_7.25.3, pandas, numpy, click_8.1.3, statsmodels, toml, scipy)
