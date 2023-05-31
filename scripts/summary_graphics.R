@@ -2,8 +2,7 @@ args = commandArgs(trailingOnly=TRUE)
 count_matrix = args[1] #path to file with count_Results
 run = args[2]
 type = args[3]
-
-#call with summary_graphics.R /b06x-isi/.../X204SC20113232-Z01-F007/count_results_A1_1_4.csv X204SC20113232-Z01-F007 A1_1_4
+WORKING_DIR = args[4]
 
 library(ggplot2)
 library(ggrepel)
@@ -85,7 +84,7 @@ graphics[[6]]=lorenz_by_count(df1,"limegreen","Cumulative fraction of sgRNAs","C
 #########################################################################
 #########################################################################
 
-target_file = paste("/b06x-isi/b062/a-c/Braun_CRISPR_2D/processed_sequencing_data/",run,"/",type,"/",type,"_L1_1_trimmed.fq.gz",collapse = "",sep="")
+target_file = paste(WORKING_DIR,"/processed_sequencing_data/",run,"/",type,"/",type,"_L1_1_trimmed.fq.gz",collapse = "",sep="")
 total_lines_fq = as.integer(system2("zcat",args = c(target_file," | wc -l"),stdout = TRUE))
 processed = (total_lines_fq/4)
 total_success = sum(df1[,11])
@@ -135,7 +134,7 @@ graphics[[17]] = ggplot(split_success_df, aes(x = "", y=value, fill = Var1)) +
 #########################################################################
 #########################################################################
 #########################################################################
-output = paste("/b06x-isi/b062/a-c/Braun_CRISPR_2D/processed_sequencing_data/",run,"/",type,"/graphics/summary_graphics_",type,".pdf",collapse = "",sep="")
+output = paste(WORKING_DIR,"/processed_sequencing_data/",run,"/",type,"/graphics/summary_graphics_",type,".pdf",collapse = "",sep="")
 pdf(output)
 list(graphics)
 dev.off()

@@ -79,9 +79,11 @@ rule make_summary_graphics:
 		"processed_sequencing_data/{run}/{type}/count_results_{type}.tsv"
 	output:
 		"processed_sequencing_data/{run}/{type}/graphics/summary_graphics_{type}.pdf"
+	params:
+		wd = WORKING_DIR
 	shell:
 		'''
 		mkdir -p processed_sequencing_data/{wildcards.run}/{wildcards.type}/graphics
 		sleep 20
-		Rscript scripts/summary_graphics.R {input} {wildcards.run} {wildcards.type}
+		Rscript scripts/summary_graphics.R {input} {wildcards.run} {wildcards.type} {params.wd}
 		'''
