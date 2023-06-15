@@ -137,9 +137,9 @@ pc_genes = ["AQR","CDK9","PABPN1"] #positive control genes in the GEMINI sense
     - Max model: LFC_AB = MAX(LFC_A,LFC_B)
     - Log model: LFC_AB = LOG2((LFC_A+1)^2*(LFC_B+1)^2 + 1)
 
-- With the expected LFC and the actual observed LFC we can calculate the deltaLFC (dLFC) which is defined as dLFC = LFC_observed - LFC_expected. The most suitable model for a given screen is the one producing the sharpes peak around 0 considering the distribution of dLFC values, reflecting the assumption that most genes do not exhibit significant interaction.
+- With the expected LFC and the actual observed LFC we can calculate the deltaLFC (dLFC) which is defined as dLFC = LFC_observed - LFC_expected. The most suitable interaction model for a given screen is the one producing the sharpest peak around 0 considering the distribution of dLFC values, reflecting the assumption that most gene pairs do not exhibit significant interaction.
 
--  Finally we can run dLFC_ranktest.py. This script runs the dLFC ranktest as described [here](https://pubmed.ncbi.nlm.nih.gov/29251726/) with a slight modification. The ranktest is run two times. After the first round the significant genes are removed from the generation process of the null distribution of the second round, a practice described [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5518132/). Pvalues are corrected by Benjamini-Hochberg method.
+-  Finally we can run dLFC_ranktest.py. This script runs the dLFC ranktest as described [here](https://pubmed.ncbi.nlm.nih.gov/29251726/) with a slight modification. The ranktest is run two times. After the first round, the significant genes are removed from the generation process of the null distribution of the second round, a practice described [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5518132/). Pvalues are corrected by Benjamini-Hochberg method.
 
 -  As an additional test we can run ttest.py. Here the dLFC values are used to run two sample independent t-test at gene level. For each gene combination targeted by the screen, the mean of the dLFC values is compared against the average of the targeted genes in combination with control. Pvalues are corrected by Benjamini-Hochberg method.
 
