@@ -139,14 +139,18 @@ pc_genes = ["AQR","CDK9","PABPN1"] #positive control genes in the GEMINI sense
 
 - First we will use the script prepare_raw_LFC.py to calculate the raw LFC. Before calculation of LFC a pseudocount (default = 32) ist added. From the calculated LFC the mean LFC over all neutralcontrol-neutralcontrol guidepairs is substracted.
 
-- Next the script process_raw_LFC.py is used. Here the expected LFC both at gene level and individual guide level is calculated. For this we must first estimate the LFC of single guides. This is done by averaging over all combinations of a given guide paired with controls. From from these estimated single guide effects the expected LFC of both guides combined is calculated based on 5 different interaction models. The most suitable model for a given screen is the one producing the sharpes peak of expected LFC around 0, reflecting the assumption that most genes do not exhibit significant interaction.
+- Next the script process_raw_LFC.py is used. Here the expected LFC both at gene level and individual guide level is calculated. For this we must first estimate the LFC of single guides. This is done by averaging over all combinations of a given guide paired with controls. From  these estimated single guide effects the expected LFC of both guides combined is calculated based on 5 different interaction models. 
     - Sum model: LFC_AB = LFC_A + LFC_B
     - Product model: LFC_AB = LFC_A * LFC_B
     - Min model: LFC_AB = MIN(LFC_A,LFC_B)
     - Max model: LFC_AB = MAX(LFC_A,LFC_B)
     - Log model: LFC_AB = LOG2((LFC_A+1)^2*(LFC_B+1)^2 + 1)
 
--  Finally dLFC_ranktest.py is used to run the dLFC ranktest as described [here]()
+- With the expected LFC and the actual observed LFC we can calculate the deltaLFC (dLFC) which is defined as dLFC = LFC_observed - LFC_expected. The most suitable interaction model for a given screen is the one producing the sharpest peak around 0 considering the distribution of dLFC values, reflecting the assumption that most gene pairs do not exhibit significant interaction.
+
+-  Finally we can run dLFC_ranktest.py. This script runs the dLFC ranktest as described [here](https://pubmed.ncbi.nlm.nih.gov/29251726/) with a slight modification. The ranktest is run two times. After the first round, the significant genes are removed from the generation process of the null distribution of the second round, a practice described [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5518132/). Pvalues are corrected by Benjamini-Hochberg method.
+
+-  As an additional test we can run ttest.py. Here the dLFC values are used to run two sample independent t-test at gene level. For each gene combination targeted by the screen, the mean of the dLFC values is compared against the average of the targeted genes in combination with control. Pvalues are corrected by Benjamini-Hochberg method.
 
 
 Tested with fastqc 0.11.5, cutadapt 1.18, R 4.1.0 (with reshape2, dplyr, ggrepel, ggplot2, gemini, configr), count_constructs 1.0 and python 3.10.11 (with snakemake_7.25.3, pandas, numpy, click_8.1.3, statsmodels, toml, scipy).
