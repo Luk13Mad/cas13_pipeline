@@ -82,9 +82,18 @@ rule make_summary_graphics:
 ```
 As you can see, first there is quality control with fastqc on the raw FASTQ files. Then cutadapt is called, followed by another round of quality control. Finally count_constructs is called to generate the desired count tables, followed by the quality control graphics for those count tables. You obtain the count tables for the other timepoints/replicates in the same way.
 
-- Keep in mind that count_constructs requires an additional library specification file. Below you find the first few lines how this file should look like. This file is oriented on the format needed for GEMINI and can be reused there.
+- Keep in mind that count_constructs requires an additional library specification file. Below you find the first few lines how this file should look like. This file is oriented on the format needed for GEMINI and can be reused there. There is no header line.
 ```
-TODO
+ANG     ALYREF  crRNA_1 crRNA_1 AGACCAACAACAAAACGCCCAGG CCAAAATCCAGATTGGACACCAG
+ANG     ALYREF  crRNA_1 crRNA_2 AGACCAACAACAAAACGCCCAGG CAAAATCCAGATTGGACACCAGC
+ANG     ALYREF  crRNA_1 crRNA_3 AGACCAACAACAAAACGCCCAGG CCAAATTCAGCAAAGAGTTCCTG
+ANG     BCL2L1  crRNA_1 crRNA_1 AGACCAACAACAAAACGCCCAGG GTTCCACAAAAGTATCCCAGCCG
+ANG     BCL2L1  crRNA_1 crRNA_2 AGACCAACAACAAAACGCCCAGG CCACAAAAGTATCCCAGCCGCCG
+ANG     BCL2L1  crRNA_1 crRNA_3 AGACCAACAACAAAACGCCCAGG TTCCACAAAAGTATCCCAGCCGC
+ANG     BRCA2   crRNA_1 crRNA_1 AGACCAACAACAAAACGCCCAGG CAGCAAATAAAGTAAGAAGGCCT
+ANG     BRCA2   crRNA_1 crRNA_2 AGACCAACAACAAAACGCCCAGG AATATTATTGGAGTTGAAGCCAG
+ANG     BRCA2   crRNA_1 crRNA_3 AGACCAACAACAAAACGCCCAGG AGCAAATAAAGTAAGAAGGCCTG
+ANG     C17orf85    crRNA_1 crRNA_1 AGACCAACAACAAAACGCCCAGG AATTCCAGTGATGAAGCTGCCAG
 ```
 
 ***
@@ -137,7 +146,7 @@ pc_genes = ["AQR","CDK9","PABPN1"] #positive control genes in the GEMINI sense
     - Max model: LFC_AB = MAX(LFC_A,LFC_B)
     - Log model: LFC_AB = LOG2((LFC_A+1)^2*(LFC_B+1)^2 + 1)
 
--  
+-  Finally dLFC_ranktest.py is used to run the dLFC ranktest as described [here]()
 
 
 Tested with fastqc 0.11.5, cutadapt 1.18, R 4.1.0 (with reshape2, dplyr, ggrepel, ggplot2, gemini, configr), count_constructs 1.0 and python 3.10.11 (with snakemake_7.25.3, pandas, numpy, click_8.1.3, statsmodels, toml, scipy).
